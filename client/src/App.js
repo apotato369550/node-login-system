@@ -6,13 +6,19 @@ import Axios from "axios";
 // import usestate
 // test this again to see why it aint working??
 
-// put this in react function???
+// implement video ting
 
 function App() {
   const [usernameReg, setUsernameReg] = useState('');
   const [passwordReg, setPasswordReg] = useState('');
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [loginStatus, setLoginStatus] = useState('');
   
-  // test this mf out
+  // watch the video
+  // test this out later
   const register = () => {
 
     Axios.post("http://localhost:3001/register", {
@@ -22,7 +28,25 @@ function App() {
       console.log(response);
     })
   }
-// is there an event parameter?
+
+  // double check this below
+  // yep this owrks/
+  // forgot to change /register to /login
+  const login = () => {
+    Axios.post("http://localhost:3001/login", {
+      username: username,
+      password: password
+    }).then((response) => {
+      if(response.data.message){
+        setLoginStatus("message: " + response.data.message);
+      } else {
+        // username of undefined
+        setLoginStatus(response.data[0].username);
+      }
+    });
+  }
+  // continue owrkin on this
+  // figure out wtf is wrong w/ this application
   return (
     <div className="App">
       <div className="registration">
@@ -39,12 +63,24 @@ function App() {
       </div>
       <div>
         <h1>Login</h1>
-        <input type="text" placeholder="username"/>
-        <input type="text" placeholder="password"/>
+        <input 
+        type="text" 
+        placeholder="username"
+        onChange={(e) => {
+          setUsername(e.target.value)
+        }}
+        />
+        <input 
+        type="text" 
+        placeholder="password"
+        onChange={(e) => {
+          setPassword(e.target.value)
+        }}/>
+        <button onClick={login}> Register </button>
       </div>
+      <h1>{loginStatus}</h1>
     </div>
   );
 }
-// e is not defined
-// web vitals??
+// test this above ^^^
 export default App;

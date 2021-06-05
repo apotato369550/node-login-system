@@ -6,6 +6,7 @@ const app = express();
 const cors = require("cors");
 
 // install cors here
+// cors working??
 app.use(cors());
 app.use(express.json());
 
@@ -31,6 +32,30 @@ app.post("/register", (req, res) => {
         [username, password],
         (err, result) => {
             console.log(err);
+        }
+    )
+})
+
+app.post("/login", (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    db.query(
+        "SELECT * FROM users WHERE username=? AND password=?",
+        [username, password],
+        (err, result) => {
+            if(err){
+                res.send({ err: err});
+            }
+
+            // test if this finally works
+            if(result.length > 0) {
+                res.send(result);
+            } else {
+                // smth wrong w/ this message
+                // watch video, fix, and continue with main project
+                res.send({message: "Wrong username/password combination"})
+            }
         }
     )
 })
